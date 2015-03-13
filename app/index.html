@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" ng-app="myApp" class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>PSO2追加模拟器</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="bower_components/html5-boilerplate/css/normalize.css">
+  <link rel="stylesheet" href="bower_components/html5-boilerplate/css/main.css">
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"/>
+  <link rel="stylesheet" href="app.css">
+  <script src="bower_components/html5-boilerplate/js/vendor/modernizr-2.6.2.min.js"></script>
+</head>
+<body>
+
+<nav class="navbar navbar-inverse navbar-static-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
+      <a href="#" class="navbar-brand">PSO2追加模拟器</a>
+    </div>
+
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a href="">只是试试</a>
+        </li>
+        <li>
+          <a href="">只是试试</a>
+        </li>
+        <li>
+          <a href="">只是试试</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- navbar end -->
+
+<div class="container-fluid main-content"  ng-controller="mainController">
+  <div class="row">
+    <div class="col-md-2 sidebar">
+      <!-- main extra list panel -->
+      <div class="panel panel-default" id="list">
+        <!-- Default panel contents -->
+        <div class="panel-heading">特殊能力列表</div>
+        <div class="panel-body">
+          <input type="text" class="form-control" placeholder="Search for...">
+        </div>
+
+        <!-- Table -->
+        <ul class="list-group extra_list"
+            dnd-list="models.lists.allExtras"
+            dnd-dragover="false"
+            >
+          <li class="list-group-item"
+              ng-repeat="item in models.lists.allExtras"
+              dnd-draggable="item"
+              dnd-effect-allowed="move"
+              dnd-selected="models.selected = item"
+              ng-class="{'selected': models.selected === item}">
+            <span ng-bind="item.name"></span>
+            <span class="badge" ng-bind="item.category"></span>
+          </li>
+        </ul>
+      </div>
+
+    </div><!-- sidebar end -->
+
+    <div class="col-md-10 extra-dashboard">
+      <div class="page-header">
+        <h1>特殊能力追加<span class="label label-success"><strong ng-bind="models.lists.mainMat.length"></strong> Slot</span></h1>
+      </div>
+      <!-- header end -->
+      <div class="row">
+
+        <!-- 本体面板 -->
+        <div class="col-md-2">
+          <div class="panel panel-success" id="main">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+
+              <span class="pull-left">本体</span>
+              <div class="pull-right">
+                <button class="btn btn-default btn-xs" type="button" id="applyBtn"  ng-click="test()">Apply</button>
+              </div>
+
+            </div>
+            <!-- list group -->
+            <ul class="list-group"
+                dnd-list="models.lists.mainMat"
+                dnd-drop="dropHandler(item,event)"
+                >
+              <li class="list-group-item"
+                  ng-repeat="item in models.lists.mainMat"
+                  dnd-draggable="item"
+                  dnd-moved="models.lists.mainMat.splice($index, 1)"
+                  dnd-effect-allowed="move"
+                  dnd-selected="models.selected = item"
+                  ng-class="{'selected': models.selected === item}">
+                <span class="pull-left" ng-bind="item.name"></span>
+                <button type="button" class="btn btn-default btn-xs pull-right" ng-click="models.lists.mainMat.splice($index,1)"><span class="glyphicon glyphicon-remove"></span></button>
+              </li>
+              <li class="list-group-item" ng-show="models.lists.mainMat.length === 0">拖拽或复制追加能力</li>
+            </ul>
+          </div>
+        </div>
+
+
+        <!-- 素材 1 -->
+        <div class="col-md-2">
+          <div class="panel panel-default" id="mat_1">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+
+              <span class="pull-left">素材1</span>
+              <div class="dropdown pull-right">
+                <button class="btn btn-default btn-xs dropdown-toggle" type="button" id="slotCopy1" data-toggle="dropdown" aria-expanded="true">
+                  Copy
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="slotCopy1">
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-click="copyHandler(0,$event)">Copy from Main</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-click="copyHandler(2,$event)">Copy from Material 2</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-click="copyHandler(3,$event)">Copy from Material 3</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-click="copyHandler(4,$event)">Copy from Material 4</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-click="copyHandler(5,$event)">Copy from Material 5</a></li>
+                </ul>
+              </div>
+
+            </div>
+            <!-- list group -->
+            <ul class="list-group"
+                dnd-list="models.lists.mat1"
+                dnd-drop="dropHandler(item,event)">
+              <li class="list-group-item"
+                  ng-repeat="item in models.lists.mat1"
+                  dnd-draggable="item"
+                  dnd-moved="models.lists.mat1.splice($index, 1)"
+                  dnd-effect-allowed="move"
+                  dnd-selected="models.selected = item"
+                  ng-class="{'selected': models.selected === item}">
+                <span class="pull-left" ng-bind="item.name"></span>
+                <button type="button" class="btn btn-default btn-xs pull-right" ng-click="models.lists.mat1.splice($index,1)"><span class="glyphicon glyphicon-remove"></span></button>
+              </li>
+              <li class="list-group-item" ng-show="models.lists.mat1.length === 0">拖拽或复制追加能力</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 素材 1  end-->
+        <!-- 素材 2 -->
+        <div class="col-md-2">
+          <div class="panel panel-default" id="mat_2">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+
+              <span class="pull-left">素材2</span>
+              <div class="dropdown pull-right">
+                <button class="btn btn-default btn-xs dropdown-toggle" type="button" id="slotCopy1" data-toggle="dropdown" aria-expanded="true">
+                  Copy
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="slotCopy1">
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-click="copyHandler(0,$event)">Copy from Main</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-click="copyHandler(1,$event)">Copy from Material 1</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-click="copyHandler(3,$event)">Copy from Material 3</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-click="copyHandler(4,$event)">Copy from Material 4</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-click="copyHandler(5,$event)">Copy from Material 5</a></li>
+                </ul>
+              </div>
+
+            </div>
+            <!-- list group -->
+            <ul class="list-group"
+                dnd-list="models.lists.mat2"
+                dnd-drop="dropHandler(item,event)">
+              <li class="list-group-item"
+                  ng-repeat="item in models.lists.mat2"
+                  dnd-draggable="item"
+                  dnd-moved="models.lists.mat2.splice($index, 1)"
+                  dnd-effect-allowed="move"
+                  dnd-selected="models.selected = item"
+                  ng-class="{'selected': models.selected === item}">
+                <span class="pull-left" ng-bind="item.name"></span>
+                <button type="button" class="btn btn-default btn-xs pull-right" ng-click="models.lists.mat2.splice($index,1)"><span class="glyphicon glyphicon-remove"></span></button>
+              </li>
+              <li class="list-group-item" ng-show="models.lists.mat2.length === 0">拖拽或复制追加能力</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 素材 2  end-->
+
+        <!-- 素材 3 -->
+        <div class="col-md-2">
+          <div class="panel panel-default" id="mat_3">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+
+              <span class="pull-left">素材3</span>
+              <div class="dropdown pull-right">
+                <button class="btn btn-default btn-xs dropdown-toggle" type="button" id="slotCopy1" data-toggle="dropdown" aria-expanded="true">
+                  Copy
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="slotCopy1">
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-click="copyHandler(0,$event)">Copy from Main</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-click="copyHandler(1,$event)">Copy from Material 1</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-click="copyHandler(2,$event)">Copy from Material 2</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-click="copyHandler(4,$event)">Copy from Material 4</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-click="copyHandler(5,$event)">Copy from Material 5</a></li>
+                </ul>
+              </div>
+
+            </div>
+            <!-- list group -->
+            <ul class="list-group"
+                dnd-list="models.lists.mat3"
+                dnd-drop="dropHandler(item,event)">
+              <li class="list-group-item"
+                  ng-repeat="item in models.lists.mat3"
+                  dnd-draggable="item"
+                  dnd-moved="models.lists.mat3.splice($index, 1)"
+                  dnd-effect-allowed="move"
+                  dnd-selected="models.selected = item"
+                  ng-class="{'selected': models.selected === item}">
+                <span class="pull-left" ng-bind="item.name"></span>
+                <button type="button" class="btn btn-default btn-xs pull-right" ng-click="models.lists.mat3.splice($index,1)"><span class="glyphicon glyphicon-remove"></span></button>
+              </li>
+              <li class="list-group-item" ng-show="models.lists.mat3.length === 0">拖拽或复制追加能力</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 素材 3  end-->
+
+        <!-- 素材 4 -->
+        <div class="col-md-2">
+          <div class="panel panel-default" id="mat_4">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+
+              <span class="pull-left">素材4</span>
+              <div class="dropdown pull-right">
+                <button class="btn btn-default btn-xs dropdown-toggle" type="button" id="slotCopy1" data-toggle="dropdown" aria-expanded="true">
+                  Copy
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="slotCopy1">
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-click="copyHandler(0,$event)">Copy from Main</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-click="copyHandler(1,$event)">Copy from Material 1</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-click="copyHandler(2,$event)">Copy from Material 2</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-click="copyHandler(3,$event)">Copy from Material 3</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-click="copyHandler(5,$event)">Copy from Material 5</a></li>
+                </ul>
+              </div>
+
+            </div>
+            <!-- list group -->
+            <ul class="list-group"
+                dnd-list="models.lists.mat4"
+                dnd-drop="dropHandler(item,event)">
+              <li class="list-group-item"
+                  ng-repeat="item in models.lists.mat4"
+                  dnd-draggable="item"
+                  dnd-moved="models.lists.mat4.splice($index, 1)"
+                  dnd-effect-allowed="move"
+                  dnd-selected="models.selected = item"
+                  ng-class="{'selected': models.selected === item}">
+                <span class="pull-left" ng-bind="item.name"></span>
+                <button type="button" class="btn btn-default btn-xs pull-right" ng-click="models.lists.mat4.splice($index,1)"><span class="glyphicon glyphicon-remove"></span></button>
+              </li>
+              <li class="list-group-item" ng-show="models.lists.mat4.length === 0">拖拽或复制追加能力</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 素材 4  end-->
+
+        <!-- 素材 5 -->
+        <div class="col-md-2">
+          <div class="panel panel-default" id="mat_5">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+
+              <span class="pull-left">素材5</span>
+              <div class="dropdown pull-right">
+                <button class="btn btn-default btn-xs dropdown-toggle" type="button" id="slotCopy1" data-toggle="dropdown" aria-expanded="true">
+                  Copy
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="slotCopy1">
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-click="copyHandler(0,$event)">Copy from Main</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-click="copyHandler(1,$event)">Copy from Material 1</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-click="copyHandler(2,$event)">Copy from Material 2</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-click="copyHandler(3,$event)">Copy from Material 3</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-click="copyHandler(4,$event)">Copy from Material 4</a></li>
+                </ul>
+              </div>
+
+            </div>
+            <!-- list group -->
+            <ul class="list-group"
+                dnd-list="models.lists.mat5"
+                dnd-drop="dropHandler(item,event)">
+              <li class="list-group-item"
+                  ng-repeat="item in models.lists.mat5"
+                  dnd-draggable="item"
+                  dnd-moved="models.lists.mat5.splice($index, 1)"
+                  dnd-effect-allowed="move"
+                  dnd-selected="models.selected = item"
+                  ng-class="{'selected': models.selected === item}">
+                <span class="pull-left" ng-bind="item.name"></span>
+                <button type="button" class="btn btn-default btn-xs pull-right" ng-click="models.lists.mat5.splice($index,1)"><span class="glyphicon glyphicon-remove"></span></button>
+              </li>
+              <li class="list-group-item" ng-show="models.lists.mat5.length === 0">拖拽或复制追加能力</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 素材 5  end-->
+      </div>
+      <!-- row end-->
+      <!-- ==============================row2=======================================-->
+
+      <div class="row">
+        <div class="col-md-4">
+          <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">追加能力选择</div>
+            <div class="panel-body">
+              <p>...</p>
+            </div>
+
+            <!-- List group -->
+            <ul class="list-group">
+              <li class="list-group-item">Cras justo odio</li>
+              <li class="list-group-item">Dapibus ac facilisis in</li>
+              <li class="list-group-item">Morbi leo risus</li>
+              <li class="list-group-item">Porta ac consectetur ac</li>
+              <li class="list-group-item">Vestibulum at eros</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">Panel heading</div>
+            <div class="panel-body">
+              <p>...</p>
+            </div>
+
+            <!-- List group -->
+            <ul class="list-group">
+              <li class="list-group-item">Cras justo odio</li>
+              <li class="list-group-item">Dapibus ac facilisis in</li>
+              <li class="list-group-item">Morbi leo risus</li>
+              <li class="list-group-item">Porta ac consectetur ac</li>
+              <li class="list-group-item">Vestibulum at eros</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">Panel heading</div>
+            <div class="panel-body">
+              <p>...</p>
+            </div>
+
+            <!-- List group -->
+            <ul class="list-group">
+              <li class="list-group-item">Cras justo odio</li>
+              <li class="list-group-item">Dapibus ac facilisis in</li>
+              <li class="list-group-item">Morbi leo risus</li>
+              <li class="list-group-item">Porta ac consectetur ac</li>
+              <li class="list-group-item">Vestibulum at eros</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div><!-- row -->
+
+</div><!-- main container -->
+
+
+
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="bower_components/jquery/dist/jquery.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+  <script src="js/angular-drag-and-drop-lists.min.js"></script>
+  <script src="app.js"></script>
+  <script src="view1/view1.js"></script>
+  <script src="view2/view2.js"></script>
+  <script src="data/data.js"></script>
+  <script src="components/version/version.js"></script>
+  <script src="components/version/version-directive.js"></script>
+  <script src="components/version/interpolate-filter.js"></script>
+</body>
+</html>

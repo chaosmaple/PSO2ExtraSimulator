@@ -1,0 +1,122 @@
+/* app css stylesheet */
+
+body {
+  font-family: "微软雅黑" "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.menu {
+  list-style: none;
+  border-bottom: 0.1em solid black;
+  margin-bottom: 2em;
+  padding: 0 0 0.5em;
+}
+
+.menu:before {
+  content: "[";
+}
+
+.menu:after {
+  content: "]";
+}
+
+.menu > li {
+  display: inline;
+}
+
+.menu > li:before {
+  content: "|";
+  padding-right: 0.3em;
+}
+
+.menu > li:nth-child(1):before {
+  content: "";
+  padding: 0;
+}
+
+/* customize css*/
+.extra-dashboard .page-header {
+  margin-top: 0;
+}
+
+.extra-dashboard .page-header h1 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.extra-dashboard .page-header h1 span.label {
+  padding: .1em .6em .1em;
+  font-size: 50%;
+  margin-left: 1em;
+  font-weight: normal;
+}
+
+.extra-dashboard .panel-heading {
+  height: 43px;
+}
+
+.extra-dashboard .panel-heading >span.pull-left {
+  line-height: 22px;
+}
+
+.extra-dashboard .panel li.list-group-item{
+  overflow: hidden;
+}
+
+/* dnd css*/
+ul[dnd-list], ul[dnd-list] > li {
+  position: relative;
+  list-style: none;
+}
+
+ul .dndPlaceholder {
+  background: #eeeeee;
+  height: 30px;
+  border-top: 1px solid #ddd;
+}
+
+ul .dndDraggingSource {
+  background: #eeeeee;
+}
+
+ul .dndDragging {
+  border: none;
+}
+
+/*dnd css end*/
+
+#list li.list-group-item,
+#main li.list-group-item,
+#mat_1 li.list-group-item,
+#mat_2 li.list-group-item,
+#mat_3 li.list-group-item,
+#mat_4 li.list-group-item,
+#mat_5 li.list-group-item {
+  white-space: nowrap;
+}
+
+@media (max-width: 1600px) {
+  #list li.list-group-item>span.badge {
+    display: none;
+  }
+}
+
+@media (max-width: 1450px) {
+  #main li.list-group-item>span,
+  #mat_1 li.list-group-item>span,
+  #mat_2 li.list-group-item>span,
+  #mat_3 li.list-group-item>span,
+  #mat_4 li.list-group-item>span,
+  #mat_5 li.list-group-item>span {
+    width: 50%;
+    text-overflow: ellipsis;
+  }
+
+  #main li.list-group-item,
+  #mat_1 li.list-group-item,
+  #mat_2 li.list-group-item,
+  #mat_3 li.list-group-item,
+  #mat_4 li.list-group-item,
+  #mat_5 li.list-group-item {
+    text-overflow: ellipsis;
+  }
+}
