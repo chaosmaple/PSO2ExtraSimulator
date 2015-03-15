@@ -33,13 +33,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
         <li>
-          <a href="">只是试试</a>
-        </li>
-        <li>
-          <a href="">只是试试</a>
-        </li>
-        <li>
-          <a href="">只是试试</a>
+          <a href="https://github.com/chaosmaple/PSO2ExtraSimulator">Github</a>
         </li>
       </ul>
     </div>
@@ -62,6 +56,7 @@
         <ul class="list-group extra_list"
             dnd-list="models.lists.allExtras"
             dnd-dragover="false"
+            ng-style="listStyle"
             >
           <li class="list-group-item"
               ng-repeat="item in models.lists.allExtras"
@@ -77,11 +72,22 @@
 
     </div><!-- sidebar end -->
 
-    <div class="col-md-10 extra-dashboard">
+    <div class="col-md-10 extra-dashboard" ng-style="containerStyle">
+      <!--
+      ==============================================================================================================
+      right board start
+      ==============================================================================================================
+      -->
+
+
       <div class="page-header">
-        <h1>特殊能力追加<span class="label label-success"><strong ng-bind="models.lists.mainMat.length"></strong> Slot</span></h1>
+        <h1>材料设定<span class="label label-success"><strong ng-bind="models.lists.mainMat.length"></strong> Slot</span></h1>
       </div>
-      <!-- header end -->
+      <!--
+      ==============================================================================================================
+      header end
+      ==============================================================================================================
+      -->
       <div class="row">
 
         <!-- 本体面板 -->
@@ -92,7 +98,7 @@
 
               <span class="pull-left">本体</span>
               <div class="pull-right">
-                <button class="btn btn-default btn-xs" type="button" id="applyBtn"  ng-click="test()">Apply</button>
+                <button class="btn btn-warning btn-xs" type="button" id="applyBtn"  ng-click="test()">Apply</button>
               </div>
 
             </div>
@@ -331,34 +337,71 @@
 
         <!-- 素材 5  end-->
       </div>
-      <!-- row end-->
-      <!-- ==============================row2=======================================-->
+
+      <!--
+      ==============================================================================================================
+      row1 end
+
+      ==============================================================================================================
+
+      row2
+      ==============================================================================================================
+      -->
+
+      <div class="page-header">
+        <h1>能力追加</h1>
+      </div>
+
+      <!--
+      ==============================================================================================================
+      row1 end
+
+      ==============================================================================================================
+      row2
+      ADD ABILITY
+      ==============================================================================================================
+      -->
 
       <div class="row">
         <div class="col-md-4">
           <div class="panel panel-default">
             <!-- Default panel contents -->
             <div class="panel-heading">追加能力选择</div>
-            <div class="panel-body">
-              <p>...</p>
+
+            <div class="panel-body" id="select_ab" ng-click="hideBody('#select_ab')">
+              <div class="alert alert-info alert-dismissible" role="alert" style="margin: 0">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                点击主体上的<strong>Apply</strong>按钮可以生成可追加列表。
+              </div>
             </div>
+
 
             <!-- List group -->
             <ul class="list-group">
-              <li class="list-group-item">Cras justo odio</li>
-              <li class="list-group-item">Dapibus ac facilisis in</li>
-              <li class="list-group-item">Morbi leo risus</li>
-              <li class="list-group-item">Porta ac consectetur ac</li>
-              <li class="list-group-item">Vestibulum at eros</li>
+              <li class="list-group-item"
+                  ng-repeat="item in selectedAbs">
+                <span ng-bind="item.name"></span>
+                <input type="checkbox" class="pull-right"/>
+              </li>
             </ul>
           </div>
         </div>
+        <!--
+        ==============================================================================================================
+        grid divider
+        SELECT ABILITY
+        ==============================================================================================================
+        -->
+
         <div class="col-md-4">
           <div class="panel panel-default">
             <!-- Default panel contents -->
             <div class="panel-heading">Panel heading</div>
             <div class="panel-body">
-              <p>...</p>
+              <div class="alert alert-warning alert-dismissible" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <strong>Warning!</strong> Better check yourself, you're not looking too good.
+            </div>
             </div>
 
             <!-- List group -->
@@ -371,6 +414,14 @@
             </ul>
           </div>
         </div>
+        <!--
+        ==============================================================================================================
+        grid divider
+        RESULT
+        ==============================================================================================================
+        -->
+
+
         <div class="col-md-4">
           <div class="panel panel-default">
             <!-- Default panel contents -->
@@ -405,6 +456,7 @@
   <script src="bower_components/jquery/dist/jquery.js"></script>
   <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
   <script src="js/angular-drag-and-drop-lists.min.js"></script>
+  <script src="js/underscore.js"></script>
   <script src="app.js"></script>
   <script src="view1/view1.js"></script>
   <script src="view2/view2.js"></script>

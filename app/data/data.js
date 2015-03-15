@@ -206,7 +206,7 @@ angular.module('myApp.data', [])
           p_atk: 15,
           s_atk: 15,
           m_atk: 15,
-          agi: 15
+          arm: 15
         },
         category: '魂',
         inherit: true,
@@ -233,7 +233,7 @@ angular.module('myApp.data', [])
         prop: {
           hp: 10,
           pp: 3,
-          agi: 30
+          arm: 30
         },
         category: '魂',
         inherit: true,
@@ -288,7 +288,7 @@ angular.module('myApp.data', [])
           hp: 20,
           pp: 1,
           s_atk: 35,
-          agi: 5
+          arm: 5
         },
         category: '魂',
         inherit: true,
@@ -302,7 +302,7 @@ angular.module('myApp.data', [])
         prop: {
           hp: 20,
           pp: 1,
-          agi: 30
+          arm: 30
         },
         category: '魂',
         inherit: true,
@@ -385,7 +385,7 @@ angular.module('myApp.data', [])
         prop: {
           hp: 30,
           m_atk: 35,
-          agi: 5          
+          arm: 5
         },
         category: '魂',
         inherit: true,
@@ -401,7 +401,7 @@ angular.module('myApp.data', [])
           p_atk: 15,
           s_atk: 15,
           m_atk: 15,
-          agi: 15        
+          arm: 15
         },
         category: '魂',
         inherit: true,
@@ -414,7 +414,7 @@ angular.module('myApp.data', [])
         name: 'ニャウ・ソール',
         prop: {
           pp: 4,
-          agi: 15
+          arm: 15
         },
         category: '魂',
         inherit: true,
@@ -484,7 +484,7 @@ angular.module('myApp.data', [])
         prop: {
           pp: 3,
           p_atk: 35,
-          agi: 5
+          arm: 5
         },
         category: '魂',
         inherit: true,
@@ -609,7 +609,7 @@ angular.module('myApp.data', [])
         name: 'ラッピー・ソール',
         prop: {
           pp: 4,
-          agi: 30
+          arm: 30
         },
         category: '魂',
         inherit: true,
@@ -686,7 +686,90 @@ angular.module('myApp.data', [])
         combine: false,
         increase: null,
         increased: null
-      }
+      },
+      //=============================================================
+      //状态加成类能力
+      //=============================================================
+      {
+        id: 3001,
+        name: 'スタミナ',
+        level: {
+          1: {
+            hp: 20
+          },
+          2: {
+            hp: 40
+          },
+          3: {
+            hp: 50
+          },
+          4: {
+            hp: 60
+          },
+          5: {
+            hp: 70
+          }
+        },
+        category: '状态',
+        inherit: true,
+        combine: true,
+        increase: null,
+        increased: null
+      },
+      {
+        id: 3002,
+        name: 'スピリタ',
+        level: {
+          1: {
+            pp: 2
+          },
+          2: {
+            pp: 3
+          },
+          3: {
+            pp: 4
+          },
+          4: {
+            pp: 5
+          },
+          5: {
+            pp: 6
+          }
+        },
+        category: '状态',
+        inherit: true,
+        combine: true,
+        increase: null,
+        increased: null
+      },
+      {
+        id: 3002,
+        name: 'アーム',
+        level: {
+          1: {
+            arm: 10
+          },
+          2: {
+            arm: 20
+          },
+          3: {
+            arm: 30
+          },
+          4: {
+            arm: 35
+          },
+          5: {
+            arm: 40
+          }
+        },
+        category: '状态',
+        inherit: true,
+        combine: true,
+        increase: null,
+        increased: null
+      },
+
+
     ];
   });
 

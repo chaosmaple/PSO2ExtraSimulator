@@ -70,7 +70,7 @@ ul[dnd-list], ul[dnd-list] > li {
 
 ul .dndPlaceholder {
   background: #eeeeee;
-  height: 30px;
+  height: 42px;
   border-top: 1px solid #ddd;
 }
 

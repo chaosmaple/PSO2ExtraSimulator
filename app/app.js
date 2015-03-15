@@ -13,8 +13,17 @@ config(['$routeProvider', function($routeProvider) {
   $routeProvider.otherwise({redirectTo: '/view1'});
 }])
 
-.controller('mainController',['$scope','mainData',function($scope,mainData){
-  //  dragable lists
+  .factory('windowHeight',function(){
+    var H = $(window).height();
+    return H;
+  })
+
+.controller('mainController',['$scope',
+    'mainData',
+    'windowHeight',
+    function($scope,mainData,windowHeight){
+  //  draggable lists
+  // ======================================================================
     $scope.models = {
       selected: null,
       max: 8,
@@ -28,30 +37,46 @@ config(['$routeProvider', function($routeProvider) {
         "mat5": []
       }
     };
-
+    //copy the data.js
     $scope.models.lists.allExtras = mainData;
-
+    //  ====================================================================
     //move handler
     //abort same extra in one material
     $scope.dropHandler = function(item,event){
+
+
       var datalist = angular.element(event.path[1]).attr('dnd-list');
       var currArr = $scope.$eval(datalist);
 
       var repeated = 0;
+      var categoryCount = 0;
       var currLen = currArr.length;
+
       angular.forEach(currArr,function(o){
         if(item.id === o.id){
           repeated++;
+        }else if(o.category === '魂'|| o.category === 'fever'|| o.category === '异常'){
+          categoryCount++;
         }
+
+
       });
+
+
       if(repeated > 0 || currLen >= 8){
         repeated = 0;
       } else{
         return item;
       }
 
+
+
+
+
+
     };
     //drop handler end
+    //  ====================================================================
     //copy handler start
     $scope.copyHandler = function(index,event){
 
@@ -103,12 +128,69 @@ config(['$routeProvider', function($routeProvider) {
 
     //copy handler end
     //list style setting
-    $scope.listStyle = {'height':'300px'};
-    $scope.test = function(){
-      console.log($scope.listStyle);
-    }
+    //==========================================
+
+      $scope.listStyle = {
+        'height': (windowHeight - 200) + 'px',
+        'overflow-y':'auto'
+      };
+      $scope.containerStyle = {
+        'height': (windowHeight - 92) + 'px',
+        'overflow-y':'auto'
+      };
+
+  //    ==========================================
+  //    test fn
 
 
+      $scope.test = function(){
+
+        var listMain = $scope.models.lists.mainMat;
+        var list1 = $scope.models.lists.mat1;
+        var list2 = $scope.models.lists.mat2;
+        var list3 = $scope.models.lists.mat3;
+        var list4 = $scope.models.lists.mat4;
+        var list5 = $scope.models.lists.mat5;
+
+
+        var allAbsList = listMain.concat(list1,list2,list3,list4,list5);
+
+        var cateCount = _.countBy(allAbsList,function(item){
+          if(item.category === '塔') {
+            return 'extreme';
+          } else if (item.category === '魂') {
+            return 'soul'
+          } else if (item.category === '状态') {
+            return 'status'
+          } else if (item.category === '其他状态') {
+            return 'othStatus'
+          } else if (item.category === '异常') {
+            return 'debuff'
+          } else if (item.category === '抗性') {
+            return 'resist'
+          } else if (item.category === 'fever') {
+            return 'fever'
+          } else if (item.category === '特殊') {
+            return 'Special'
+          } else if (item.category === 'Others') {
+            return 'Others'
+          }
+        });
+
+        _.each()
+
+
+      };
+  //    test fn end
+  //    ==========================================
+  //  concat mat arrays
+
+
+      $scope.selectedAbs = [];
+
+      $scope.hideBody = function(ele){
+        console.log($(ele).html() === '')
+      }
 
 
   }]);
