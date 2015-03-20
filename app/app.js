@@ -140,8 +140,7 @@ config(['$routeProvider', function($routeProvider) {
       };
 
   //    ==========================================
-  //    test fn
-
+  //    ab selection fn
 
       $scope.test = function(){
 
@@ -153,16 +152,20 @@ config(['$routeProvider', function($routeProvider) {
         var list5 = $scope.models.lists.mat5;
 
 
-        var allAbsList = listMain.concat(list1,list2,list3,list4,list5);
+        $scope.allAbs = listMain.concat(list1,list2,list3,list4,list5);
 
-        var cateCount = _.countBy(allAbsList,function(item){
+        $scope.chooseAbs = _.uniq($scope.allAbs,false,function(value){
+          return value.id;
+        });
+
+        var cateCount = _.countBy($scope.allAbs,function(item){
           if(item.category === '塔') {
             return 'extreme';
           } else if (item.category === '魂') {
             return 'soul'
           } else if (item.category === '状态') {
             return 'status'
-          } else if (item.category === '其他状态') {
+          } else if (item.category === '其他') {
             return 'othStatus'
           } else if (item.category === '异常') {
             return 'debuff'
@@ -177,7 +180,9 @@ config(['$routeProvider', function($routeProvider) {
           }
         });
 
-        _.each()
+        console.log(cateCount.soul);
+
+
 
 
       };
@@ -186,11 +191,7 @@ config(['$routeProvider', function($routeProvider) {
   //  concat mat arrays
 
 
-      $scope.selectedAbs = [];
 
-      $scope.hideBody = function(ele){
-        console.log($(ele).html() === '')
-      }
 
 
   }]);

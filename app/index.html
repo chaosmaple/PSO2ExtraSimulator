@@ -368,18 +368,13 @@
             <!-- Default panel contents -->
             <div class="panel-heading">追加能力选择</div>
 
-            <div class="panel-body" id="select_ab" ng-click="hideBody('#select_ab')">
-              <div class="alert alert-info alert-dismissible" role="alert" style="margin: 0">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                点击主体上的<strong>Apply</strong>按钮可以生成可追加列表。
-              </div>
-            </div>
+
 
 
             <!-- List group -->
             <ul class="list-group">
               <li class="list-group-item"
-                  ng-repeat="item in selectedAbs">
+                  ng-repeat="item in chooseAbs">
                 <span ng-bind="item.name"></span>
                 <input type="checkbox" class="pull-right"/>
               </li>
