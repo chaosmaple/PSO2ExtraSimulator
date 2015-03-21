@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>PSO2追加模拟器</title>
-  <meta name="description" content="">
+  <meta name="description" content="PSO2">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="bower_components/html5-boilerplate/css/normalize.css">
   <link rel="stylesheet" href="bower_components/html5-boilerplate/css/main.css">
@@ -61,9 +61,7 @@
           <li class="list-group-item"
               ng-repeat="item in models.lists.allExtras"
               dnd-draggable="item"
-              dnd-effect-allowed="move"
-              dnd-selected="models.selected = item"
-              ng-class="{'selected': models.selected === item}">
+              dnd-effect-allowed="move">
             <span ng-bind="item.name"></span>
             <span class="badge" ng-bind="item.category"></span>
           </li>
@@ -98,7 +96,7 @@
 
               <span class="pull-left">本体</span>
               <div class="pull-right">
-                <button class="btn btn-warning btn-xs" type="button" id="applyBtn"  ng-click="test()">Apply</button>
+                <button class="btn btn-warning btn-xs" type="button" id="applyBtn"  ng-click="applyAbs($event)">Apply</button>
               </div>
 
             </div>
@@ -363,11 +361,17 @@
       -->
 
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
           <div class="panel panel-default">
             <!-- Default panel contents -->
             <div class="panel-heading">追加能力选择</div>
 
+            <div class="panel-body" ng-show="chooseAbs.length === 0">
+              <div class="alert alert-info alert-dismissible" role="alert" style="margin-bottom: 0;">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                点击主体上的<strong>Apply</strong>按钮即可添加能力
+              </div>
+            </div>
 
 
 
@@ -376,7 +380,9 @@
               <li class="list-group-item"
                   ng-repeat="item in chooseAbs">
                 <span ng-bind="item.name"></span>
-                <input type="checkbox" class="pull-right"/>
+                <b ng-bind="needQty(item)"></b>
+                <b ng-bind="combineQty(item)"></b>
+                <input type="checkbox" class="pull-right" ng-model="checkbox1" ng-change="checkChange($index,item,checkbox1)" ng-disabled="checkboxCtrl(item)"/>
               </li>
             </ul>
           </div>
@@ -388,24 +394,21 @@
         ==============================================================================================================
         -->
 
-        <div class="col-md-4">
+        <div class="col-md-6">
           <div class="panel panel-default">
             <!-- Default panel contents -->
-            <div class="panel-heading">Panel heading</div>
+            <div class="panel-heading">追加能力</div>
             <div class="panel-body">
-              <div class="alert alert-warning alert-dismissible" role="alert">
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <strong>Warning!</strong> Better check yourself, you're not looking too good.
-            </div>
+
             </div>
 
             <!-- List group -->
             <ul class="list-group">
-              <li class="list-group-item">Cras justo odio</li>
-              <li class="list-group-item">Dapibus ac facilisis in</li>
-              <li class="list-group-item">Morbi leo risus</li>
-              <li class="list-group-item">Porta ac consectetur ac</li>
-              <li class="list-group-item">Vestibulum at eros</li>
+              <li class="list-group-item"
+                  ng-repeat="item in chosenAbs">
+                <span ng-bind="item.name"></span>
+                <span class="pull-right" ng-bind="countRate(item)"></span>
+              </li>
             </ul>
           </div>
         </div>
@@ -416,25 +419,6 @@
         ==============================================================================================================
         -->
 
-
-        <div class="col-md-4">
-          <div class="panel panel-default">
-            <!-- Default panel contents -->
-            <div class="panel-heading">Panel heading</div>
-            <div class="panel-body">
-              <p>...</p>
-            </div>
-
-            <!-- List group -->
-            <ul class="list-group">
-              <li class="list-group-item">Cras justo odio</li>
-              <li class="list-group-item">Dapibus ac facilisis in</li>
-              <li class="list-group-item">Morbi leo risus</li>
-              <li class="list-group-item">Porta ac consectetur ac</li>
-              <li class="list-group-item">Vestibulum at eros</li>
-            </ul>
-          </div>
-        </div>
       </div>
 
     </div>
@@ -453,6 +437,7 @@
   <script src="js/angular-drag-and-drop-lists.min.js"></script>
   <script src="js/underscore.js"></script>
   <script src="app.js"></script>
+  <script src="js/other.js"></script>
   <script src="view1/view1.js"></script>
   <script src="view2/view2.js"></script>
   <script src="data/data.js"></script>

@@ -1,5 +1,5 @@
 #PSO2 Extra Simulator
 
-###Building,dont check
+###Building,don't check
 
 ###just for try Angular

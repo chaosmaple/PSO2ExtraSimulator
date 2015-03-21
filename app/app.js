@@ -15,6 +15,7 @@ config(['$routeProvider', function($routeProvider) {
 
   .factory('windowHeight',function(){
     var H = $(window).height();
+
     return H;
   })
 
@@ -39,39 +40,54 @@ config(['$routeProvider', function($routeProvider) {
     };
     //copy the data.js
     $scope.models.lists.allExtras = mainData;
+
     //  ====================================================================
     //move handler
     //abort same extra in one material
     $scope.dropHandler = function(item,event){
 
-
-      var datalist = angular.element(event.path[1]).attr('dnd-list');
+      var datalist = angular.element(event.target.parentNode).attr('dnd-list');
       var currArr = $scope.$eval(datalist);
 
       var repeated = 0;
       var categoryCount = 0;
+      var subCount = 0;
+
+
       var currLen = currArr.length;
 
       angular.forEach(currArr,function(o){
         if(item.id === o.id){
           repeated++;
-        }else if(o.category === '魂'|| o.category === 'fever'|| o.category === '异常'){
-          categoryCount++;
-        }
 
+        }else if(o.category === '魂' && item.category === '魂'|| o.category === '狂热'&& item.category === '狂热'|| o.category === '异常' && item.category === '异常'|| o.category === '塔' && item.category === '塔' || o.category === '特殊' && item.category === '特殊'){
+          categoryCount++;
+        }else if(o.sub && o.sub === item.sub){
+          subCount++;
+        }
 
       });
 
 
-      if(repeated > 0 || currLen >= 8){
+      if(repeated > 0 || categoryCount > 0 || subCount > 0 || currLen >= 8){
         repeated = 0;
+        categoryCount = 0;
+        subCount = 0;
+
+        //$(event.target.parentNode.parentNode).popover({
+        //  content: '不能再添加这种能力了!',
+        //  placement: 'top',
+        //  trigger: 'hover',
+        //  delay: { "show": 500, "hide": 2000 }
+        //}).popover('show');
+
+
       } else{
+
+        categoryCount = 0;
+        subCount = 0;
         return item;
       }
-
-
-
-
 
 
     };
@@ -80,7 +96,8 @@ config(['$routeProvider', function($routeProvider) {
     //copy handler start
     $scope.copyHandler = function(index,event){
 
-      var currId = event.path[5].id;
+      console.log(event.target.parentNode.parentNode.parentNode.parentNode.id)
+      var currId = event.target.parentNode.parentNode.parentNode.parentNode.id;
       var copyTo,copyFrom;
 
       switch (currId){
@@ -122,7 +139,13 @@ config(['$routeProvider', function($routeProvider) {
           break;
       }
 
-      angular.copy(copyFrom, copyTo);
+      if(copyFrom.length !== 0) {
+        angular.copy(copyFrom, copyTo)
+      }else {
+        alert('那里啥都没有哟')
+      }
+
+
 
     };
 
@@ -142,7 +165,10 @@ config(['$routeProvider', function($routeProvider) {
   //    ==========================================
   //    ab selection fn
 
-      $scope.test = function(){
+      //declare
+
+      $scope.applyAbs = function(e){
+        console.log(e)
 
         var listMain = $scope.models.lists.mainMat;
         var list1 = $scope.models.lists.mat1;
@@ -158,38 +184,94 @@ config(['$routeProvider', function($routeProvider) {
           return value.id;
         });
 
-        var cateCount = _.countBy($scope.allAbs,function(item){
-          if(item.category === '塔') {
-            return 'extreme';
-          } else if (item.category === '魂') {
-            return 'soul'
-          } else if (item.category === '状态') {
-            return 'status'
-          } else if (item.category === '其他') {
-            return 'othStatus'
-          } else if (item.category === '异常') {
-            return 'debuff'
-          } else if (item.category === '抗性') {
-            return 'resist'
-          } else if (item.category === 'fever') {
-            return 'fever'
-          } else if (item.category === '特殊') {
-            return 'Special'
-          } else if (item.category === 'Others') {
-            return 'Others'
-          }
+        $scope.idCount = _.countBy($scope.allAbs,function(item){
+          return item.id;
         });
 
-        console.log(cateCount.soul);
 
+        $scope.checkboxCtrl = function(item){
 
+          return $scope.idCount[item.id] >= item.inherit?false:true;
+
+        };
+
+        $scope.needQty = function(item){
+          var a = parseInt($scope.idCount[item.id],10);
+          var b = parseInt(item.inherit,10);
+          var c = b - a;
+
+          return a >= b?'':'继承@' + c;
+        };
+
+        $scope.combineQty = function(item){
+          var a = parseInt($scope.idCount[item.id],10);
+          var b = _.isNumber(item.combine)?item.combine:false;
+          var c = b - a;
+
+          if(b == false || a >= b){
+            console.log(item.id);
+            console.log(item.id + 1);
+            alert('sss');
+
+            return ''
+          } else{
+            return '合成@' + c;
+          }
+        }
 
 
       };
-  //    test fn end
+
+      // has bug
+
+
   //    ==========================================
   //  concat mat arrays
+  //  TODO还需要优化
 
+      $scope.chosenAbs = [];
+
+      $scope.checkChange = function(index,item,status){
+
+        if(status === true) {
+          $scope.chosenAbs.push(item)
+        } else {
+          angular.forEach($scope.chosenAbs,function(obj,key){
+            if(obj.id === item.id){
+              $scope.chosenAbs.splice(key,1);
+            }
+          })
+
+        }
+        console.log($scope.chosenAbs)
+
+      }
+      //
+      //count RATE
+      //    ==========================================
+      //  concat mat arrays
+
+      $scope.countRate = function(item){
+
+        var count = 0;
+
+        var rate = 0;
+
+        angular.forEach($scope.allAbs,function(obj){
+          if(obj.id === item.id) {
+            count++;
+          }
+
+        });
+
+        switch (item.category) {
+          case '塔':
+            (count >= 3) ? rate = 80:rate = 0;
+        }
+
+
+        return rate
+      }
 
 
 
