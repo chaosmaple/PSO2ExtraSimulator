@@ -366,7 +366,7 @@
             <!-- Default panel contents -->
             <div class="panel-heading">追加能力选择</div>
 
-            <div class="panel-body" ng-show="chooseAbs.length === 0">
+            <div class="panel-body" ng-if="chooseAbs.length === 0">
               <div class="alert alert-info alert-dismissible" role="alert" style="margin-bottom: 0;">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 点击主体上的<strong>Apply</strong>按钮即可添加能力
@@ -380,8 +380,8 @@
               <li class="list-group-item"
                   ng-repeat="item in chooseAbs">
                 <span ng-bind="item.name"></span>
-                <b ng-bind="needQty(item)"></b>
-                <b ng-bind="combineQty(item)"></b>
+                <b>继承@<span ng-bind="item.inherit"></span></b>
+                <b>合成@<span ng-bind="item.combine"></span></b>
                 <input type="checkbox" class="pull-right" ng-model="checkbox1" ng-change="checkChange($index,item,checkbox1)" ng-disabled="checkboxCtrl(item)"/>
               </li>
             </ul>

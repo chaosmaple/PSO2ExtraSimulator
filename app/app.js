@@ -96,8 +96,8 @@ config(['$routeProvider', function($routeProvider) {
     //copy handler start
     $scope.copyHandler = function(index,event){
 
-      console.log(event.target.parentNode.parentNode.parentNode.parentNode.id)
-      var currId = event.target.parentNode.parentNode.parentNode.parentNode.id;
+      console.log(event);
+      var currId = event.target.parentNode.parentNode.parentNode.parentNode.parentNode.id;
       var copyTo,copyFrom;
 
       switch (currId){
@@ -145,8 +145,6 @@ config(['$routeProvider', function($routeProvider) {
         alert('那里啥都没有哟')
       }
 
-
-
     };
 
     //copy handler end
@@ -162,13 +160,14 @@ config(['$routeProvider', function($routeProvider) {
         'overflow-y':'auto'
       };
 
-  //    ==========================================
+  //==========================================
   //    ab selection fn
+  //==========================================
+      $scope.chooseAbs = [];
 
-      //declare
+      $scope.applyAbs = function(){
 
-      $scope.applyAbs = function(e){
-        console.log(e)
+        $scope.chooseAbs = [];
 
         var listMain = $scope.models.lists.mainMat;
         var list1 = $scope.models.lists.mat1;
@@ -177,50 +176,91 @@ config(['$routeProvider', function($routeProvider) {
         var list4 = $scope.models.lists.mat4;
         var list5 = $scope.models.lists.mat5;
 
+        var allAbs = listMain.concat(list1,list2,list3,list4,list5);
 
-        $scope.allAbs = listMain.concat(list1,list2,list3,list4,list5);
+        angular.forEach(allAbs,function(obj){
+          var seen = _.map($scope.chooseAbs,function(item){
+            return item.id
+          });
+          var index = _.indexOf(seen,obj.id)
 
-        $scope.chooseAbs = _.uniq($scope.allAbs,false,function(value){
-          return value.id;
-        });
+          if(index === -1) {
 
-        $scope.idCount = _.countBy($scope.allAbs,function(item){
-          return item.id;
-        });
+            var tmp = {}
+            angular.copy(obj,tmp)
 
+            --tmp.inherit;
+            if(tmp.inherit === 0) {
+              tmp.inherit = true;
+            }
 
-        $scope.checkboxCtrl = function(item){
+            if(_.isNumber(tmp.combine) && tmp.combine > 0) {
 
-          return $scope.idCount[item.id] >= item.inherit?false:true;
+              --tmp.combine;
+              if(tmp.combine === 0)tmp.combine = true;
 
-        };
+            }
 
-        $scope.needQty = function(item){
-          var a = parseInt($scope.idCount[item.id],10);
-          var b = parseInt(item.inherit,10);
-          var c = b - a;
+            $scope.chooseAbs.push(tmp);
 
-          return a >= b?'':'继承@' + c;
-        };
+          }else {
 
-        $scope.combineQty = function(item){
-          var a = parseInt($scope.idCount[item.id],10);
-          var b = _.isNumber(item.combine)?item.combine:false;
-          var c = b - a;
+            if(_.isNumber($scope.chooseAbs[index].inherit) && $scope.chooseAbs[index].inherit > 0) {
+              --$scope.chooseAbs[index].inherit;
+              if($scope.chooseAbs[index].inherit === 0)$scope.chooseAbs[index].inherit = true;
+            }
 
-          if(b == false || a >= b){
-            console.log(item.id);
-            console.log(item.id + 1);
-            alert('sss');
+            if(_.isNumber($scope.chooseAbs[index].combine) &&  $scope.chooseAbs[index].combine > 0) {
+              --$scope.chooseAbs[index].combine;
+              if($scope.chooseAbs[index].combine === 0)$scope.chooseAbs[index].combine = true;
 
-            return ''
-          } else{
-            return '合成@' + c;
+            }
+
           }
-        }
+
+        })
+
+        //$scope.chooseAbs = _.uniq(abCopy,false,function(value){
+        //  return value.id;
+        //});
+
+        //
+        //$scope.idCount = _.countBy($scope.allAbs,function(item){
+        //  return item.id;
+        //});
 
 
       };
+
+      //$scope.checkboxCtrl = function(item){
+      //
+      //  return $scope.idCount[item.id] >= item.inherit || item.inherit === true ?false:true;
+      //
+      //};
+      //
+      //$scope.needQty = function(item){
+      //  var a = parseInt($scope.idCount[item.id],10);
+      //  var b = parseInt(item.inherit,10);
+      //  var c = b - a;
+      //  return a >= b?'':'继承@' + c;
+      //};
+      //
+      //$scope.combineQty = function(item){
+      //  var a = parseInt($scope.idCount[item.id],10);
+      //  var b = _.isNumber(item.combine)?item.combine:false;
+      //  var c = b - a;
+      //
+      //  if(_.isNumber(b) && c > 0){
+      //    return '合成@' + c;
+      //  } else if(_.isNumber(b) && c <= 0){
+      //    angular.forEach(mainData,function(obj){
+      //      if(obj.id - 1=== item.id){
+      //        obj.inherit = true;
+      //        $scope.chooseAbs.push(obj);
+      //      }
+      //    })
+      //  }
+      //};
 
       // has bug
 
@@ -250,29 +290,6 @@ config(['$routeProvider', function($routeProvider) {
       //count RATE
       //    ==========================================
       //  concat mat arrays
-
-      $scope.countRate = function(item){
-
-        var count = 0;
-
-        var rate = 0;
-
-        angular.forEach($scope.allAbs,function(obj){
-          if(obj.id === item.id) {
-            count++;
-          }
-
-        });
-
-        switch (item.category) {
-          case '塔':
-            (count >= 3) ? rate = 80:rate = 0;
-        }
-
-
-        return rate
-      }
-
 
 
 
