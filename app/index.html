@@ -380,9 +380,9 @@
               <li class="list-group-item"
                   ng-repeat="item in chooseAbs">
                 <span ng-bind="item.name"></span>
-                <b>继承@<span ng-bind="item.inherit"></span></b>
-                <b>合成@<span ng-bind="item.combine"></span></b>
-                <input type="checkbox" class="pull-right" ng-model="checkbox1" ng-change="checkChange($index,item,checkbox1)" ng-disabled="checkboxCtrl(item)"/>
+                <b ng-show="item.inherit !== true">继承@<span ng-bind="item.inherit"></span></b>
+                <b ng-show="item.combine !== true && item.combine !== false">合成@<span ng-bind="item.combine"></span></b>
+                <input type="checkbox" class="pull-right" ng-model="checkbox1" ng-change="checkChange($index,item,checkbox1)" ng-disabled="item.inherit !== true"/>
               </li>
             </ul>
           </div>
