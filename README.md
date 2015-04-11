@@ -1,5 +1,5 @@
 #PSO2 Extra Simulator
 
-###Building,don't check
+Deprecated
 
-###just for try Angular
+Rebuilding on other branch
